@@ -1,0 +1,27 @@
+PhenDblog_accueil:
+    path:      /{page}
+    defaults:  { _controller: PhenDBlogBundle:Blog:index, page: 1 }
+    requirements:
+        page:  \d*
+ 
+PhenDblog_voir:
+    path:      /article/{id}
+    defaults:  { _controller: PhenDBlogBundle:Blog:voir }
+    requirements:
+        id:  \d+
+ 
+PhenDblog_ajouter:
+    path:      /ajouter
+    defaults:  { _controller: PhenDBlogBundle:Blog:ajouter }
+ 
+PhenDblog_modifier:
+    path:      /modifier/{id}
+    defaults:  { _controller: PhenDBlogBundle:Blog:modifier }
+    requirements:
+        id:  \d+
+ 
+PhenDblog_supprimer:
+    path:      /supprimer/{id}
+    defaults:  { _controller: PhenDBlogBundle:Blog:supprimer }
+    requirements:
+        id:  \d+

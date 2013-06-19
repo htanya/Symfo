@@ -1,0 +1,32 @@
+<?php
+// src/Phenome/TryBundle/Controller/TryController.php
+
+namespace Phenome\TryBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+
+//require 'vendor/autoload.php';
+
+class TryController extends Controller
+  {
+  public function indexAction()
+    {
+
+ $sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql');
+
+
+    $result = $sparql->query('SELECT * WHERE {?s ?p <http://bio2rdf.org/drugbank_vocabulary:Drug>}');
+
+
+    //$result->dump();
+
+foreach ($result as $row) {
+
+        print $result;
+    
+    } //closes for each
+ return $this->render('PhenomeTryBundle:Try:index.html.twig');
+  } //closes fnc
+
+} //closes class

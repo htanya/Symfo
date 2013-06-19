@@ -1,0 +1,31 @@
+<?php
+// src/Phenome/TryBundle/Entity/DrugRepository.php
+
+namespace Phenome\TryBundle\Entity;
+
+use Doctrine\ORM\EntityRepository;
+
+class DrugRepository extends EntityRepository
+{
+
+public function getDrugsQuery ()
+{
+
+	$sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql');
+
+
+        $result = $sparql->query('SELECT ?drug ?drugname
+			WHERE {
+			?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug> .
+			?drug rdfs:label ?drugname .}LIMIT 1');
+
+	foreach($result AS $o) {
+  		$drug = new Drug;
+ 		 $drug->setDrugname($o->drugname);
+ 		 $drugs[] = $drug;
+
+		return $drug;
+				} //closes foreach
+
+	} //closes function
+} //closes class

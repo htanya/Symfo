@@ -1,0 +1,63 @@
+<?php
+// src/PhenD/BlogBundle/Entity/ArticleCompetence.php
+ 
+namespace PhenD\BlogBundle\Entity;
+ 
+use Doctrine\ORM\Mapping as ORM;
+ 
+/**
+ * @ORM\Entity
+ */
+class ArticleCompetence
+{
+  /**
+    * @ORM\Id
+    * @ORM\ManyToOne(targetEntity="PhenD\BlogBundle\Entity\Article")
+    */
+  private $article;
+ 
+  /**
+    * @ORM\Id
+    * @ORM\ManyToOne(targetEntity="PhenD\BlogBundle\Entity\Competence")
+    */
+  private $competence;
+ 
+  /**
+    * @ORM\Column()
+    */
+  private $niveau; // Ici j'ai un attribut de relation « niveau »
+ 
+  // … les autres attributs
+ 
+  // Getter et setter pour l'entité Article
+  public function setArticle(\PhenD\BlogBundle\Entity\Article $article)
+  {
+    $this->article = $article;
+  }
+  public function getArticle()
+  {
+    return $this->article;
+  }
+ 
+  // Getter et setter pour l'entité Competence
+  public function setCompetence(\PhenD\BlogBundle\Entity\Competence $competence)
+  {
+    $this->competence = $competence;
+  }
+  public function getCompetence()
+  {
+    return $this->competence;
+  }
+ 
+  // On définit le getter/setter de l'attribut « niveau »
+  public function setNiveau($niveau)
+  {
+    $this->niveau = $niveau;
+  }
+  public function getNiveau()
+  {
+    return $this->niveau;
+  }
+ 
+  // … les autres getters/setters si vous en avez
+}

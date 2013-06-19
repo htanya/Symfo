@@ -1,0 +1,13 @@
+phenome_try:
+    resource: "@PhenomeTryBundle/Resources/config/routing.php"
+    prefix:   /try
+
+
+PhenDBlogBundle:
+    resource: "@PhenDBlogBundle/Resources/config/routing.yml"
+    prefix:   /blog
+
+acme_hello:
+    resource: "@AcmeHelloBundle/Resources/config/routing.yml"
+    prefix:   /
+

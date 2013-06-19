@@ -1,0 +1,25 @@
+{# src/PhenD/BlogBundle/Resources/views/Blog/voir.html.twig #}
+{% extends "PhenDBlogBundle::layout.html.twig" %}
+{% block title %}
+Lecture d'un article - {{ parent() }}
+{% endblock %}
+{% block PhenDblog_body %}
+{# Ici, on inclut la vue #}
+{% include "PhenDBlogBundle:Blog:article.html.twig" %}
+<p>
+<a href="{{ path('PhenDblog_accueil') }}" class="btn">
+<i class="icon-chevron-left"></i>
+Retour à la liste
+</a>
+<a href="{{ path('PhenDblog_modifier', {'id': article.id}) }}"
+class="btn">
+<i class="icon-edit"></i>
+Modifier l'article
+</a>
+<a href="{{ path('PhenDblog_supprimer', {'id': article.id}) }}"
+class="btn">
+<i class="icon-trash"></i>
+Supprimer l'article
+</a>
+</p>
+{% endblock %}

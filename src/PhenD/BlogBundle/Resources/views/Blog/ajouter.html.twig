@@ -1,0 +1,16 @@
+{# src/PhenD/BlogBundle/Resources/views/Blog/ajouter.html.twig #}
+ 
+{% extends "PhenDBlogBundle::layout.html.twig" %}
+ 
+{% block body %}
+ 
+  <h2>Ajouter un article</h2>
+ 
+  {% include "PhenDBlogBundle:Blog:formulaire.html.twig" %}
+ 
+  <p>
+     Attention : cet article sera ajouté directement
+     sur la page d'accueil après validation du formulaire.
+  </p>
+ 
+{% endblock %}

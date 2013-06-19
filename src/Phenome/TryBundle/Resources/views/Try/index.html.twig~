@@ -1,0 +1,24 @@
+{# src/Phenome/TryBundle/Resources/views/Try/index.html.twig #}
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>Bienvenue au site PhenomeDrug</title>
+    </head>
+ <body>
+   <h1>Bonjour !</h1> 
+    <p>
+    Bienvenue 'a la page test pour PhenomeDrug :p
+    </p>
+
+ <ul>
+    {% for obs in objs %}
+      <li>
+        <a href="http://test.com/">{{ obj.drugname }}</a>
+      </li>
+    {% else %}
+      <li>Pas (encore !) de drogues</li>
+    {% endfor %}
+  </ul>
+
+ </body>
+</html>
