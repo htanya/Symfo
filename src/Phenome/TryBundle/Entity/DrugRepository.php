@@ -3,7 +3,9 @@
 
 namespace Phenome\TryBundle\Entity;
 
-
+/**
+ * Phenome\TryBundle\Entity\DrugRepository
+ */
 
 class DrugRepository 
 {
@@ -17,7 +19,7 @@ public function getDrugsQuery ()
         $result = $sparql->query('SELECT ?drug ?drugname
 			WHERE {
 			?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug> .
-			?drug rdfs:label ?drugname .}LIMIT 1');
+			?drug rdfs:label ?drugname .}');
 
 	foreach($result AS $o) {
   		$drug = new Drug;

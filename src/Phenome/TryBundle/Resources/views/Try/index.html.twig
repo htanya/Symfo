@@ -18,7 +18,17 @@
     {% else %}
       <li>Pas (encore !) de drogues</li>
     {% endfor %}
-  </ul>
+  </ul> <p>
+{{ dump(drugs) }}
+</p>
+
+<p>
+{% for key, value in drugs %}
+  {{ key }}
+  {#{ value }#}
+{% endfor %}
+
+</p>
 
  </body>
 </html>

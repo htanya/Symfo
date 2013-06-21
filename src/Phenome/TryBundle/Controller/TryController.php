@@ -12,7 +12,7 @@ use Phenome\TryBundle\Query\getDrugQuery;
 
 
 
-//$result =  $this->get('phenome_try.query');
+
 
 class TryController extends Controller
   {
@@ -22,7 +22,11 @@ class TryController extends Controller
     {
 	
  	$drug = new getDrugQuery;  
+        $drug = $this->container->get('phenome_try.query')->getDrugsQuery('drugname');
+        // $drug = $this->getDrugsQuery();
+	//$drug->drug;
 	$drugs[]=$drug;
+	//echo $drug;
 
 
   echo '<pre>';
@@ -42,15 +46,10 @@ foreach($result AS $o) {
  		 $drugs[] = $drug;
 
 		return $drug;} */
-	 
-	
-    
-
-
   
 
   return $this->render('PhenomeTryBundle:Try:index.html.twig', 
-		array('drugs'=>$drug)
+		array('drugs'=>$drugs)
 		);
     } //closes function
 

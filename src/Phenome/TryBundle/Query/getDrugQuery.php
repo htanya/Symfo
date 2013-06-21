@@ -10,13 +10,16 @@ use Phenome\TryBundle\Entity\Drug;
 
 class getDrugQuery 
 {
+//public $drug;
+
+private $drugname = null;
+// $drugname = null;
+
 
 public function getDrugsQuery ()
 {
 
-//private $drugname = null;
 
-//public $result;
 
 	$sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql');
 
@@ -24,10 +27,10 @@ public function getDrugsQuery ()
         $result = $sparql->query('SELECT ?drug ?drugname
 			WHERE {
 			?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug> .
-			?drug rdfs:label ?drugname .}LIMIT 1');
+			?drug rdfs:label ?drugname .}');
 
 	foreach($result AS $o) {
-  		$drug = new Drug;
+  		 $drug = new Drug;
  		 $drug->setDrugname($o->drugname);
  		 $drugs[] = $drug;
 
