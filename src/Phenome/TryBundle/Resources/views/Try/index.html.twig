@@ -13,25 +13,23 @@
     Bienvenue 'a la page test pour PhenomeDrug :p
     </p>
 
+
  <ul>
     {% for drug in drugs %}
       <li>
-        <a href="http://test.com/">{{ drug.drugname }}</a>
+        <a href="http://test.com/"> {{ drug.drugname}}</a>
       </li>
     {% else %}
       <li>Pas (encore !) de drogues</li>
     {% endfor %}
-  </ul> <p>
-{{ dump(drugs) }}
-</p>
+  </ul> 
 
 <p>
-{% for key, value in drugs %}
-  {{ key }}
-  {#{ value }#}
-{% endfor %}
+<pre>
+{{ dump (drugs) }}
+</pre>
+</p>
 
-</p> 
 
 
  </body>

@@ -21,36 +21,20 @@ class TryController extends Controller
   public function indexAction()
     {
 	
- 	$drug = new getDrugQuery;  
-        $drug = $this->container->get('phenome_try.query')->getDrugsQuery('drugname');
-        // $drug = $this->getDrugsQuery();
-	//$drug->drug;
-	$drugs[]=$drug;
-	//echo $drug;
-
-
-  echo '<pre>';
-       // echo $obj->getDrugsQuery();
-
-
-	  //$this->get('phenome_try.query');
-        // $this->container->get('phenome_try.query');
-	//$drug =  $this->container->get('phenome_try.query');
-                  //$this->getRepository('PhenomeTryBundle:DrugRepository');
-	         //$this-> getDrugsQuery ();
-
-/*
-foreach($result AS $o) {
-  		$drug = new Drug;
- 		 $drug->setDrugname($o->drugname);
- 		 $drugs[] = $drug;
-
-		return $drug;} */
+	$get_drugs_service = $this->container->get('phenome_try.query');
+ 	$drug = new Drug;  
+	$drug = $get_drugs_service-> getDrugsQuery('drugname');
+        $drugs[]=$drug;
+	
+ // echo '<pre>';
   
-
+  
   return $this->render('PhenomeTryBundle:Try:index.html.twig', 
 		array('drugs'=>$drugs)
 		);
+
     } //closes function
+
+
 
   } //closes class
