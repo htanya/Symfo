@@ -6,10 +6,7 @@ namespace Phenome\TryBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Phenome\TryBundle\Entity\Drug;
-use Phenome\TryBundle\Entity\DrugRepository;
 use Phenome\TryBundle\Query\getDrugQuery;
-
-
 
 
 
@@ -24,16 +21,22 @@ class TryController extends Controller
 	$get_drugs_service = $this->container->get('phenome_try.query');
  	$drug = new Drug;  
 	$drug = $get_drugs_service-> getDrugsQuery('drugname');
-        $drugs[]=$drug;
+        $drugs['drugname'] = $drug;
 	
  // echo '<pre>';
   
+
   
   return $this->render('PhenomeTryBundle:Try:index.html.twig', 
 		array('drugs'=>$drugs)
 		);
 
     } //closes function
+
+public function __toString()
+    {
+        return strval($this->drugname);
+    }
 
 
 

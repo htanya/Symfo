@@ -14,6 +14,8 @@ class Drug
 {
 
 	private $drugname = null;
+	private $drug = null;
+	
 
 
 	public function setDrugname($drugname)
@@ -26,10 +28,23 @@ class Drug
 		return $this->drugname;
 	}
 
+/*
+public function setDrug($drug)
+	{
+		$this->drug = $drug;
+	}
 
-public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null)
-{
-    $this->container = $container;
-}
+	public function getDrug ()
+	{
+		return $this->drug;
+	} */
+
+
+ public function __toString()
+    {
+        return strval($this->drugname);
+    }
+	
+
 
 }//closes class
