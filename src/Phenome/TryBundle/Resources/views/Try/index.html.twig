@@ -8,26 +8,30 @@
       <title>Bienvenue au site PhenomeDrug</title>
     </head>
  <body>
+
+
    <h1>Bonjour !</h1> 
     <p>
     Bienvenue 'a la page test pour PhenomeDrug :p
-    </p>
+    </p> 
 
 
+{#twig#}
  <ul>
     {% for drug in drugs %}
       <li>
-        <a href="http://test.com/"> {{ drug.drugname}}</a>
-      </li>
+        <a href="http://test.com/"> {{drug}}</a>
+      </li> 
     {% else %}
       <li>Pas (encore !) de drogues</li>
     {% endfor %}
+
   </ul> 
 
 
 <p>
 <pre>
-{{ dump (drugs) }}
+{#{ dump (drugs) }#}
 </pre>
 </p>
 

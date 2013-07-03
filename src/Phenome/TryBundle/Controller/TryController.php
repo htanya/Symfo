@@ -20,10 +20,34 @@ class TryController extends Controller
 	
 	$get_drugs_service = $this->container->get('phenome_try.query');
  	$drug = new Drug;  
-	$drug = $get_drugs_service-> getDrugsQuery('drugname');
-        $drugs['drugname'] = $drug;
+	$result = $get_drugs_service-> getDrugsQuery('result');
+
+$drugs= array();
+
+for($i=0;$i<count($result);$i++){
+
+    $dn = $result[$i]->{'drugname'};
+    $d = $result[$i]->{'drug'};
+
+    if(is_object($dn)){
+        //see http://www.easyrdf.org/docs/api/EasyRdf_Literal.html
+        //print_r($dn->getValue());
+    $drugs[] = $dn->getValue();
+
+    }
+
+    if(is_object($d)){
+    //see http://www.easyrdf.org/docs/api/EasyRdf_Resource.html
+        //print_r($d->get('uri'));    
+    }
+
+
+} //closes for
+
+
 	
- // echo '<pre>';
+ // echo "\n".'controller'."\n";
+//var_dump($drugs);
   
 
   
@@ -32,6 +56,8 @@ class TryController extends Controller
 		);
 
     } //closes function
+
+
 
 public function __toString()
     {

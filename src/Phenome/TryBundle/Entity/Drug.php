@@ -18,7 +18,7 @@ class Drug
 	
 
 
-	public function setDrugname($drugname)
+	public function setDrugname()
 	{
 		$this->drugname = $drugname;
 	}
