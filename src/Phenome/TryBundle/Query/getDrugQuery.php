@@ -10,64 +10,95 @@ use Phenome\TryBundle\Entity\Drug;
 
 class getDrugQuery 
 {
+	private $endpoint = "http://cu.drugbank.bio2rdf.org/sparql";
+	private $test_number = 10;
 
 
-private $drugname = null;
-
-
-
- 
 
 public function getDrugsQuery ()
+
 {
 
-       
+//this function performs the SPARQL query and saves the result in a EasyRDF array (mixed objects - literals  and ressources (uri))
 
-	$sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql');
+$sparql = new \EasyRdf_Sparql_Client(self::endpoint);
 
 
-        $result = $sparql->query('SELECT ?drug ?drugname
+$result = $sparql->query('SELECT ?drug ?drugname ?target ?indication
 			WHERE {
 			?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug> .
-			?drug rdfs:label ?drugname .} LIMIT 3');
+			?drug rdfs:label ?drugname .
+			?drug <http://bio2rdf.org/drugbank_vocabulary:target> ?t .
+			?t rdfs:label ?target .
+			OPTIONAL{
+			?drug <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication .}
+			} LIMIT 10');
 
     echo '<pre>';
-/*
-//print_r($result->getFields());
-echo "Loop starts here <br>";
-for($i=0;$i<count($result);$i++){
-
-    $dn = $result[$i]->{'drugname'};
-    $d = $result[$i]->{'drug'};
-
-    if(is_object($dn)){
-        //see http://www.easyrdf.org/docs/api/EasyRdf_Literal.html
-        print_r($dn->getValue());
-        //echo $dn->
-$drugs[] = $dn;
-
-    }
-
-    if(is_object($d)){
-    //see http://www.easyrdf.org/docs/api/EasyRdf_Resource.html
-        //print_r($d->get('uri'));    
-    }
-	
-	
-	
-
-
-
-} //closes for */
-
-//print_r ($dn);
 
 return $result;
+
 } //closes function 
 
+public function getDrugs()
+{
+ $sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql');
+ $result = $sparql->query ('SELECT ?drug ?drugname WHERE {?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug>; rdfs:label ?drugname .} LIMIT 10');
+ return $result;
+}
+
+public function getTargets($drug_uri)
+{
+ $sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql');
+ $result = $sparql->query ('SELECT ?target_uri ?target_name 
+WHERE {
+  <'.$drug_uri.'> <http://bio2rdf.org/drugbank_vocabulary:target> ?target_uri .
+  ?target_uri rdfs:label ?target_name .
+}');
+ return $result;
+}
+
+public function getIndications($drug_uri)
+{
+ $sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql');
+ $result = $sparql->query ('SELECT ?indication_uri
+WHERE {
+  <'.$drug_uri.'> <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication_uri .
+}');
+ return $result;
+}
 
 
-/*
+
+public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null)
+{
+	    $this->container = $container;
+
+} //closes function
+
+
+} //closes class
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .::: EXTRA CODE (previous attempts) :::.
+
+
 
 //works!
         $drugs = array();
@@ -87,20 +118,7 @@ return $result;
 
 
 
-					}//closes foreach */
+					}//closes foreach 
 
 			//return $drug; 
 
-
-
-
-
-
-
-public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null)
-{
-    $this->container = $container;
-} //closes function
-
-
-} //closes class

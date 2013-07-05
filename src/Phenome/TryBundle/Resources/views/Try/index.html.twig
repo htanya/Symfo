@@ -1,6 +1,6 @@
 {# src/Phenome/TryBundle/Resources/views/Try/index.html.twig #}
 
-
+{# This page renders the contents of the arrays which are rendered to the view in the TryController #}
 
 <!DOCTYPE html>
   <html>
@@ -15,8 +15,28 @@
     Bienvenue 'a la page test pour PhenomeDrug :p
     </p> 
 
+<table>
+   <tr><th>Drug</th> <th>Target</th> <th>Indications</th> </tr>
 
-{#twig#}
+ {% for result in results %}
+   <tr>
+     <td><a href="{{result.drug_uri}}">{{result.drug_name}}</a></td>
+     <td>{% for target in result.targets %}
+       <li><a href="{{target.target_uri}}">{{target.target_name}}</a>
+ 	 {% endfor %}
+     </td>
+
+      <td>{% if result.indications is defined %} {% for indication in result.indications %}
+       <li><a href="http://test.com/">{{indication.indication_uri}}</a>
+ 	 {% endfor %} {% endif %}
+     </td>
+   </tr>
+ {% endfor %}
+
+</table>
+{#
+
+{drugnames}
  <ul>
     {% for drug in drugs %}
       <li>
@@ -29,6 +49,53 @@
   </ul> 
 
 
+{drug uri's}
+
+ <ul>
+
+    {% for drug_uri in drugs_uri %}
+      <li>
+        <a href="http://test.com/"> {{drug_uri}}</a>
+      </li> 
+    {% else %}
+      <li>Pas (encore !) de uri</li>
+    {% endfor %}
+
+
+  </ul> 
+
+
+{drug targets}
+
+ <ul>
+
+    {% for drug_target in drugs_target %}
+      <li>
+        <a href="http://test.com/">  {{drug_target}} </a> 
+      </li> 
+    {% else %}
+      <li>Pas (encore !) de cibles</li>
+    {% endfor %}
+
+
+  </ul> 
+
+
+{drug indications}
+
+ <ul>
+
+    {% for drug_indication in drugs_indication %}
+      <li>
+        <a href="http://test.com/"> {{drug_indication}}  </a> 
+      </li> 
+    {% else %}
+      <li>Pas (encore !) d'indications</li>
+    {% endfor %}
+
+
+  </ul> 
+#}
 <p>
 <pre>
 {#{ dump (drugs) }#}

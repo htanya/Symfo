@@ -1,4 +1,5 @@
 <?php
+// /var/www/Symfony/src/Phenome/TryBundle/Resources/config
 
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
