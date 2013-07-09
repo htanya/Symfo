@@ -70,12 +70,63 @@ WHERE {
 
 
 
-public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null)
+public function getAllDrugInfo ()
+
 {
-	    $this->container = $container;
+
+//$get_drugs_service = $this->container->get('phenome_try.query');
+$drug = new Drug;  
+	$drugs = array();
+	$drugs = $this-> getDrugs();
+	foreach($drugs AS $i => $drug) {
+		$o = '';
+		$o['drug_uri'] = $drugs[$i]->{'drug'};
+		$o['drug_name'] = $drugs[$i]->{'drugname'};
+
+	// fetch targets
+	$targets = array();
+	$targets = $this->getTargets($o['drug_uri']);
+	
+	foreach ($targets AS $j => $target) {
+		$t = '';
+		$t['target_name'] = $targets[$j]->{'target_name'};
+		$t['target_uri'] = $targets[$j]->{'target_uri'};
+		$o['targets'][] = $t;
+//print_r ($t);
+	}
+
+	// fetch indications
+	$indications = array ();
+	$indications = $this->getIndications($o['drug_uri']);
+
+	foreach ($indications AS $x => $indication) {
+		//var_dump ($indications); 
+		$y = '';
+		$y['indication_uri'] = $indications[$x]->{'indication_uri'};
+		$o['indications'][] = $y; 
+		//print_r ($y);
+	//echo '<pre>';
+
+					    } //closes foreach
+
+
+	//$o->indications = $get_drugs_service->getIndications($o->drug_uri); 
+	$results[] = $o;
+	
+	//print_r($results);
+				} //closes
+
+	
+return $results;
 
 } //closes function
 
+
+public function setContainer(\Symfony\Component\DependencyInjection\ContainerInterface $container = null)
+	{
+	    $this->container = $container;
+
+	} //closes function
 
 } //closes class
 

@@ -19,46 +19,50 @@ class TryController extends Controller
     {
 	
 $get_drugs_service = $this->container->get('phenome_try.query');
-$drug = new Drug;  
+$results = array();	
+$results = $get_drugs_service->getAllDrugInfo();
 
-	$drugs = $get_drugs_service->getDrugs();
-	foreach($drugs AS $i => $drug) {
-		$o = '';
-		$o['drug_uri'] = $drugs[$i]->{'drug'};
-		$o['drug_name'] = $drugs[$i]->{'drugname'};
-
-	// fetch targets
-	$targets = $get_drugs_service->getTargets($o['drug_uri']);
-	foreach ($targets AS $j => $target) {
-		$t = '';
-		$t['target_name'] = $targets[$j]->{'target_name'};
-		$t['target_uri'] = $targets[$j]->{'target_uri'};
-		$o['targets'][] = $t;
-//print_r ($t);
-	}
-
-	// fetch indications
-	$indications = $get_drugs_service->getIndications($o['drug_uri']);
-
-	foreach ($indications AS $x => $indication) {
-		//var_dump ($indications); 
-		$y = '';
-		$y['indication_uri'] = $indications[$x]->{'indication_uri'};
-		$o['indications'][] = $y; 
-		//print_r ($y);
-	//echo '<pre>';
-
-					    }
+return $this->render('PhenomeTryBundle:Try:index.html.twig',  array('results'=>$results));
 
 
-	//$o->indications = $get_drugs_service->getIndications($o->drug_uri); 
-	$results[] = $o;
-	//print_r($results);
-}
+	} //closes function
 
-return $this->render('PhenomeTryBundle:Try:index.html.twig', array('results'=>$results));
 
-/*
+ public function get_drugsAction()
+    {
+
+$drug_uri = new Drug;
+$get_drugs_service = $this->container->get('phenome_try.query');
+$results = array();	
+$results = $get_drugs_service->getAllDrugInfo();
+//var_dump($results);
+
+
+return $this->render('PhenomeTryBundle:Try:get_drugs.html.twig', array('results'=>$results));
+
+				} //closes function 
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+} //closes class
+
+
+
+
+/* OLD CODE
 	$result = $get_drugs_service-> getDrugsQuery('result');
 
 //accessing $result array (from SPARQL query), and getting out the drug attributes (drugname, drug uri, target and indications)
@@ -101,7 +105,4 @@ if(is_object($indication)){
 		array('drugs'=>$drugs, 'drugs_uri'=>$drugs_uri, 'drugs_target'=>$drugs_target, 'drugs_indication'=>$drugs_indication)
 		); */
 
-    } //closes function
-
-
-} //closes class
+    

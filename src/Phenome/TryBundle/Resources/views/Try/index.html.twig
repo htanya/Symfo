@@ -20,7 +20,7 @@
 
  {% for result in results %}
    <tr>
-     <td><a href="{{result.drug_uri}}">{{result.drug_name}}</a></td>
+     <td> <a href="{{ path('drug', { 'drug_uri': result.drug_uri }) }}"> {{result.drug_name}}</a></td>
      <td>{% for target in result.targets %}
        <li><a href="{{target.target_uri}}">{{target.target_name}}</a>
  	 {% endfor %}
