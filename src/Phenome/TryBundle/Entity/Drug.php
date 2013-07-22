@@ -28,16 +28,16 @@ class Drug
 		return $this->drugname;
 	}
 
-/*
-public function setDrug($drug)
+
+public function setDrug_uri()
 	{
-		$this->drug = $drug;
+		$this->drug_uri = $drug_uri;
 	}
 
-	public function getDrug ()
+	public function getDrug_uri ()
 	{
-		return $this->drug;
-	} */
+		return $this->drug_uri;
+	} 
 
 
  public function __toString()

@@ -4,6 +4,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Parameter;
 use Phenome\TryBundle\Query;
+use Phenome\TryBundle\Twig;
 
 //use Phenome\TryBundle\Entity\Drug;
 
@@ -18,6 +19,19 @@ $container->setDefinition(
         )  */
     ) 
 );
+
+
+$container
+    ->register('phenome.twig.replacedrug_extension', 'Phenome\TryBundle\Twig\ReplacedrugExtension')
+    ->addTag('twig.extension');
+
+$container
+    ->register('phenome.twig.replacetarget_extension', 'Phenome\TryBundle\Twig\ReplacetargetExtension')
+    ->addTag('twig.extension');
+
+$container
+    ->register('phenome.twig.urlencode_extension', 'Phenome\TryBundle\Twig\URLencodeExtension')
+    ->addTag('twig.extension');
 
 //$container->setParameter('DrugRepository.class', 'getDrugQuery');
 

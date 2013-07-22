@@ -28,19 +28,43 @@ return $this->render('PhenomeTryBundle:Try:index.html.twig',  array('results'=>$
 	} //closes function
 
 
- public function get_drugsAction()
+public function get_drugsAction()
     {
 
 $drug_uri = new Drug;
 $get_drugs_service = $this->container->get('phenome_try.query');
 $results = array();	
 $results = $get_drugs_service->getAllDrugInfo();
+//$drug_uri = $result->($o->getDrugId)
 //var_dump($results);
 
 
 return $this->render('PhenomeTryBundle:Try:get_drugs.html.twig', array('results'=>$results));
 
 				} //closes function 
+
+
+public function get_TargetInfoAction()
+    {
+$target_name = new Drug;
+$get_drugs_service = $this->container->get('phenome_try.query');
+$results = array();	
+$results = $get_drugs_service->getAllDrugInfo();
+//$drug_uri = $result->($o->getDrugId)
+//var_dump($results);
+return $this->render('PhenomeTryBundle:Try:target_page.html.twig', array('results'=>$results));
+   } //closes function 
+
+public function get_IndicationInfoAction()
+    {
+$indication_uri = new Drug;
+$get_drugs_service = $this->container->get('phenome_try.query');
+$results = array();	
+$results = $get_drugs_service->getAllDrugInfo();
+//$drug_uri = $result->($o->getDrugId)
+//var_dump($results);
+return $this->render('PhenomeTryBundle:Try:indication_page.html.twig', array('results'=>$results));
+   } //closes function 
 
 
 

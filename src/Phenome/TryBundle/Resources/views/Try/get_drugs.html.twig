@@ -1,22 +1,98 @@
 {# src/Phenome/TryBundle/Resources/views/Try/get_drugs.html.twig #}
 
+<div id="navigation">
+  <a href={{ path('phenome_try_homepage') }}>Back to homepage</a> 
+</div> 
+
+
+
+
+{% block Phenome_body %}
+
 {% set uri = app.request.uri %}
-
-{% set uri2 = uri | removePath %}
-
-{#% set uri2 = true %#}
+{% set uri2 = uri | removeDrugPath %}
 
 
+
+<body>
+<div id="top"> 
+{% block title %}
+{% set uri = app.request.uri %}
+{% set uri2 = uri | removeDrugPath %}
 <h3>Drug page for {{uri2}}</h3>
+{% endblock %}
+</div>
 
 
-<p>
- 
-
-{****} <p>
+<div id="left">
+{% block drug_uri%}
+{% set uri = app.request.uri %}
+{% set uri2 = uri | removeDrugPath %}
 
 {% for result in results %}
-	{% if result.drug_uri == (uri| removePath) %}
+	{% if result.drug_uri == (uri| removeDrugPath) %}
+<h3>Drug URI</h3><p> <h4>{{result.drug_uri}}</h4> <p>
+	{% endif %}
+{% endfor %}
+{% endblock %}
+</div>
+
+<div id="middle">
+{% block target %}
+{% set uri = app.request.uri %}
+{% set uri2 = uri | removeDrugPath %}
+
+{% for result in results %}
+	{% for target in result.targets %}
+		{% if result.drug_uri == (uri| removeDrugPath) %}
+			<h3>Drug Target</h3><p> <h4>{{target.target_name}}</h4><p>
+		{% endif %}
+	{% endfor %}
+{% endfor %}
+
+
+{% endblock %}
+
+</div>
+
+<div id="right">
+{% block indication %}
+{% set uri = app.request.uri %}
+{% set uri2 = uri | removeDrugPath %}
+
+{% for result in results %}
+	{% if result.indications is defined %} {% for indication in result.indications %}
+		{% if result.drug_uri == (uri| removeDrugPath) %}
+			<h3>Drug Indication</h3><p> <h4>{{indication.indication_uri}} </h4><p>
+		{% endif %}
+						{% endfor %}
+	{% endif %}
+{% endfor %}
+
+
+{% endblock %}
+
+</div>
+</body>
+
+
+{% endblock %}
+
+
+{% block stylesheets %}
+            
+            <link href="{{ asset('bundles/uamdatatables/css/layout.css') }}" rel="stylesheet" />
+{% endblock %}
+
+
+
+{#
+##################################################################################
+
+ <p>
+
+{% for result in results %}
+	{% if result.drug_uri == (uri| removeDrugPath) %}
 	<b>matched drug uri:</b> {{result.drug_uri}} <p>
 	<b>drug name:</b> {{result.drug_name}} <p>
 		{% for target in result.targets %}
@@ -28,148 +104,12 @@
 	{% endif %}
 {% endfor %}
 
-<p>{*****}<P>
-
-<a href={{ path('phenome_try_homepage') }}>Back to homepage</a> 
-<P>
-
-<hr> <hr>
-
-{#######################################################################################################################}
-<table>
-   <tr><th>Drug</th> <th>Target</th> <th>Indications</th> </tr>
-
- {% for result in results %}
-   <tr>
-     <td><a href="{{result.drug_uri}}">{{ result.drug_name}}</a></td>
-     <td>{% for target in result.targets %}
-       <li><a href="{{target.target_uri}}">{{target.target_name}}</a>
- 	 {% endfor %}
-     </td>
-
-      <td>{% if result.indications is defined %} {% for indication in result.indications %}
-       <li> <a href="http://test.com/">{{indication.indication_uri}}</a>
- 	 {% endfor %} {% endif %}
-     </td>
-   </tr>
- {% endfor %}
-
-</table>
-
-
- 
-
-<ul class="nav nav-pills nav-stacked">
-  {# % if drug_uri is not null % #}
-  {# Drug uri:  {#<a href="{{path ('drug')}} "#} {#{{results.drug_uri}} #} {#</a> #} 
-  {#% endif %#}
-
-</ul>
-
-
-
-{#{{ single_query (uri2) }}#}
-
-<p>
-
-{#for each tests
-<p><p>
-{test}
-{% for result in results %} 
-    {% if (uri2) == result.drug_uri %}
-        Match!
-    {% else %}
-        NO MATCH.
-    {% endif %}
-{% endfor %}
-<p>
-{test 2}
-{% set strippedVar = uri2 %}
-{% for result in results %} 
-{{ strippedVar }}{{ (strippedVar in result.drug_uri) ? 'exists' : 'does not exist' }}.
-{% endfor %}
 <p>
 
 
 #}
-{#
-{test 3}
-{% for result in results %} 
-    {% if (uri2) == result.drug_uri %}
-        {{ attribute(uri2, result.drug_name) }}
-    {% else %}
-        NO MATCH.
-    {% endif %}
-{% endfor %}
-#}
-
-<p>
-<p>
-{#
-{{ uri | removePath }} <p>
-
-{% for result in results %}
-{{result.drug_uri}}<br>
-{% endfor %} #}
-
-{#
-<P>
-{% for result in results %}
-{% for drug_uri in result %}
-{{result.drug_uri}}<br>
-{% endfor %}
-{% endfor %} #}
 
 
-{#{uri}#}
-
-
-
-{#
-<P>
-{% for result in results %} 
-    {% if (uri|removePath) = result.drug_uri %}
-        Match Found! :)
-    {% else %}
-        NO MATCH.
-    {% endif %}
-{% endfor %} #}
-
-
-<P>
-
-
-{# checking for keys #}
-{#
-{% for result in results %}
-{% for drug_uri in result|keys %}
-
-        <li>{{ drug_uri }}</li>
-    {% endfor %}{% endfor %} #}
-<p>
-{#
-  {% for result in results if result.drug_uri is sameas (uri| removePath) %}
-        <li>{result.drug_name}</li>
-{% else %}
-        <li><em>not found</em></li>
-    {% endfor %} #}
-
-{#
-{% for result in results %}
-{{uri | removePath}}
- {% endfor %}
-#}
-
-
-
-{#
-{{ path(app.request.attributes.get('_route'), 
-        app.request.attributes.get('_route_params')) }} <P> #}
-
-{#
-{% for result in results %}
-   Drug uri:  <a href="{{ path('drug', { 'drug_uri': result.drug_uri }) }}">{{ result.drug_name }}</a>  
- {% endfor %} #}
 
 
 

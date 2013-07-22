@@ -11,6 +11,7 @@ $collection->add('phenome_try_homepage', new Route('/', array(
     '_controller' => 'PhenomeTryBundle:Try:index',
 )));
 
+
 $collection->add('drug', new Route('/drug/{drug_uri}', array(
     '_controller' => 'PhenomeTryBundle:Try:get_drugs',
  'drug_uri'        => 1,
@@ -19,5 +20,21 @@ $collection->add('drug', new Route('/drug/{drug_uri}', array(
     'drug_uri' => 'http://bio2rdf.org/drugbank:\D{2}\d{5}',
 
 )));
+
+
+$collection->add('target', new Route('/target/{target_name}', array(
+    '_controller' => 'PhenomeTryBundle:Try:get_TargetInfo',
+ 'target_name'        => 1,
+), array(
+    'target_name' => '\w.+\s\[drugbank_target:\d{2,4}\]',
+)));
+
+$collection->add('indication', new Route('/indication/{indication_uri}', array(
+    '_controller' => 'PhenomeTryBundle:Try:get_IndicationInfo',
+ 'indication_uri'        => 1,
+)));  
+
+
+
 
 return $collection;

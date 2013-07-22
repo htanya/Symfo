@@ -1,0 +1,46 @@
+<?php
+// src/Phenome/TryBundle/Twig/QueryExtension.php
+namespace Phenome\TryBundle\Twig;
+
+
+
+class QueryExtension extends \Twig_Extension
+{
+
+
+
+$twig = new Twig_Environment($loader);
+$function = new Twig_SimpleFunction('single_query', function ($uri) {
+
+
+$sparql = new \EasyRdf_Sparql_Client(self::endpoint);
+
+
+$result = $sparql->query('SELECT '$uri' ?drugname ?target ?indication
+			WHERE {
+			'$uri' a <http://bio2rdf.org/drugbank_vocabulary:Drug> .
+			'$uri' rdfs:label ?drugname .
+			'$uri' <http://bio2rdf.org/drugbank_vocabulary:target> ?t .
+			?t rdfs:label ?target .
+			OPTIONAL{
+			'$uri' <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication .}
+			} LIMIT 10');
+
+
+return $result;
+
+});
+$twig->addFunction($function);
+
+
+ public function getName()
+    {
+        return 'single_query';
+    }
+
+
+} //closes class
+
+/*
+   
+
