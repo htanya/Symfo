@@ -19,19 +19,23 @@
  <head>
 {% block javascripts %}
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
- <script type="text/javascript" charset="utf-8" src="{{ asset('bundles/uamdatatables/js/jquery.dataTables.js') }}"></script>
+ <script type="text/javascript" charset="utf-8" src="{{ asset('bundles/datatables/js/jquery.dataTables.js') }}"></script>
+
  <script type="text/javascript">
 $(document).ready( function () {
-    $('#table_id').dataTable(
-
-);
+    $('#table_id').dataTable({
+    "bProcessing": true,
+    "bServerSide": true,
+    "sAjaxSource": "{{ asset ('bundles/datatables/my_server_side.php') }}",
+   // "sServerMethod": "GET"
+});
 } ); 
 </script>
    {% endblock %}
 
   {% block stylesheets %}
             
-            <link href="{{ asset('bundles/uamdatatables/css/demo_table.css') }}" rel="stylesheet" />
+            <link href="{{ asset('bundles/datatables/css/demo_table.css') }}" rel="stylesheet" />
   {% endblock %}
  </head>
 <table>
