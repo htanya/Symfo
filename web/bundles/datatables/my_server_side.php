@@ -24,17 +24,19 @@ $r = getBasic_FromEndpoint($q);
 $o = json_decode($r);
 $total_record_count = (int) ($o->results->bindings[0]->count->value);
 
-/*
-				// get the total number of results AFTER filtering (iTotalDisplayRecords)
-
-$q = "SELECT (count(?drug) AS ?count) WHERE { ?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug>}";
-$r = getBasic_FromEndpoint($q);
-$o = json_decode($r);
-$total_record_count = (int) ($o->results->bindings[0]->count->value); */
-
 
 				// now fetch what is wanted to populate the table
 
+
+//allows column 1 to be filterable
+if($_GET['iSortCol_0'] == 0) {
+  $sort_order = $_GET['sSortDir_0']."(?drug)";
+} else $sort_order = "ASC(?drug)";
+
+//makes column 1 searchable in search box above table
+if(isset($_GET['sSearch_0'])) {
+  $filter = " filter regex(?drugname,\"".$_GET['sSearch_0']."\", \"i\")";
+}
 //Query to get drug_uri's and drug
 $q = "SELECT ?drug ?drugname 
 WHERE { 
@@ -43,16 +45,7 @@ WHERE {
  $filter
 }";
 
-//makes column 1 to be filterable
-if($_GET['iSortCol_0'] == 0) {
-  $sort_order = $_GET['sSortDir_0']."(?drug)";
-} else $sort_order = "ASC(?drug)";
 
-
-//makes column 1 searchable (in search box above table)
-if(isset($_GET['sSearch_0'])) {
-  $filter = " filter regex(?drugname,\"".$_GET['sSearch']."\", \"i\")";
-}
 
 //Query to get drug_uri's
 $r = getFromEndpoint($q, $sort_order, $limit, $offset);
@@ -69,57 +62,96 @@ foreach($o->results->bindings AS $result) {
   $row = array();
   $row[] = $drug_name;
 
+
+
 // Query to get drug targets (with reference to drug_uri)
+$filter = '';
+if(isset($_GET['sSearch_1'])) {
+  $filter = " filter regex(?target_name,\"".$_GET['sSearch_1']."\", \"i\")";
+}
+
   $q = "SELECT ?target_uri ?target_name 
 WHERE {
  <$drug_uri> <http://bio2rdf.org/drugbank_vocabulary:target> ?target_uri .
  ?target_uri rdfs:label ?target_name .
+ $filter
 } 
 ORDER BY ASC(?target_name)";
   $r = getBasic_FromEndpoint($q);
   $o2 = json_decode($r);
 
 //create a list of targets to display in table
+  $filtered = true;
   $target_list = '<ul>';
   foreach($o2->results->bindings AS $result2) {
    $target_list .= "<li>";
    $target_list .= (string) ($result2->target_name->value);
+   $filtered = false;
   }
   $target_list .= '</ul>';
-  $row[] = $target_list;
+  if($filtered != true) $row[1] = $target_list;
 
 
 
 // Query to get drug indications (with reference to drug_uri)
+$filter = '';
+if(isset($_GET['sSearch_2'])) {
+  $filter = " filter regex(?indication,\"".$_GET['sSearch_2']."\", \"i\")";
+}
   $q = "SELECT ?indication 
 WHERE {
  <$drug_uri> <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication  .
+ $filter
 } 
 ORDER BY ASC(?indication)";
   $r = getBasic_FromEndpoint($q);
   $o3 = json_decode($r);
 
-//create a list of indications to display in table
+//create a list of targets to display in table
+  $filtered = true;
   $indication_list = '<ul>';
   foreach($o3->results->bindings AS $result3) {
    $indication_list .= "<li>";
-   $indication_list .= (string) ($result3->indication->value);
+   $i = (string) ($result3->indication->value);
+   if($i != '') $filtered = false;
+   $indication_list  .= $i;
   }
   $indication_list .= '</ul>';
-  $row[] = $indication_list;
+  if($filtered != true) $row[2] = $indication_list;
+
+
 
 // creating the rendering array
-  $row[] = '';
-  $rows[] = $row;
 
+  // check for column level filtering
+  if(!isset($row[1]) || !isset($row[2])) unset($row);
+
+  // check for global filtering
+/*
+  if(isset($row) && $_GET['sSearch']) {
+   $filter = true;
+   foreach($row AS $r) {
+      if( strstr($r,$_GET['sSearch']) !== FALSE) {
+        $filter = false;break;
+      }
+   }
+   if($filter == true) {
+    unset($row);
+   }
+  }
+*/
+  if(isset($row)) {
+   $rows[] = $row;
+  }
 }
 
-$record_count = (int) 4000;
+//$record_count = (int) 4000;
 
 $output = array(
 "sEcho" => $echo_value,
 "iTotalRecords" => intval($total_record_count),
 "iTotalDisplayRecords" => intval($total_record_count),
+//"sColumns" => array ('Drug', 'Target', 'Indications'),
 "aaData" => $rows,
 );
 
