@@ -22,13 +22,46 @@
  <script type="text/javascript" charset="utf-8" src="{{ asset('bundles/datatables/js/jquery.dataTables.js') }}"></script>
 
  <script type="text/javascript">
+
 $(document).ready( function () {
-    $('#table_id').dataTable({
+var asInitVals = new Array();
+    var oTable = $('#table_id').dataTable({
     "bProcessing": true,
     "bServerSide": true,
-    "sAjaxSource": "{{ asset ('bundles/datatables/my_server_side.php') }}",
-   // "sServerMethod": "GET"
-});
+    "sAjaxSource": "{{ asset ('bundles/datatables/my_server_side.php') }}"
+
+   	// "sServerMethod": "GET"
+    });
+
+
+    $("tfoot input").each( function (i) {
+        asInitVals[i] = this.value;
+    } );
+
+        
+   /*  
+    $("tfoot input").focus( function () {
+        if ( this.className == "search_init" )
+        {
+            this.className = "";
+            this.value = "";
+        }
+    } );
+
+    $("tfoot input").blur( function (i) {
+        if ( this.value == "" )
+        {
+            this.className = "search_init";
+            this.value = asInitVals[$("tfoot input").index(this)];
+        }
+    } );
+*/
+    $("tfoot input").keyup( function () {
+        oTable.fnFilter( this.value, $("tfoot input").index(this) );
+    } );
+
+
+ 
 } ); 
 </script>
    {% endblock %}
@@ -65,6 +98,16 @@ $(document).ready( function () {
  {% endfor %}
 
 </tbody> 
+
+	<tfoot>
+		<tr>
+			<th><input type="text" name="search_drug" value="Search drugs" class="search_init" /></th>
+			<th><input type="text" name="search_target" value="Search targets" class="search_init" /></th>
+			<th><input type="text" name="search_indication" value="Search indications" class="search_init" /></th>
+
+		</tr>
+	</tfoot>
+
 </table>
 </html>
 

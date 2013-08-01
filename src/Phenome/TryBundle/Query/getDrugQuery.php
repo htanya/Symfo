@@ -32,7 +32,7 @@ $result = $sparql->query('SELECT ?drug ?drugname ?target ?indication
 			?t rdfs:label ?target .
 			OPTIONAL{
 			?drug <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication .}
-			} LIMIT 10');
+			} LIMIT 20');
 
     echo '<pre>';
 
@@ -42,7 +42,7 @@ return $result;
 
 public function getDrugs()
 {
- $sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql');
+ $sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql?default-graph-uri=&query=');
  $result = $sparql->query ('SELECT ?drug ?drugname WHERE {?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug>; rdfs:label ?drugname .} LIMIT 10');
  return $result;
 }
