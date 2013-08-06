@@ -12,8 +12,9 @@
 
    <h1>Bonjour !</h1> 
     <p>
-    Bienvenue 'a la page test pour PhenomeDrug :p
+    Bienvenue à la page test pour PhenomeDrug :p
     </p> 
+
 
 
  <head>
@@ -23,12 +24,35 @@
 
  <script type="text/javascript">
 
+
+
 $(document).ready( function () {
 var asInitVals = new Array();
     var oTable = $('#table_id').dataTable({
     "bProcessing": true,
     "bServerSide": true,
-    "sAjaxSource": "{{ asset ('bundles/datatables/my_server_side.php') }}"
+    "sAjaxSource": "{{ asset ('bundles/datatables/my_server_side.php') }}",
+"fnRowCallback": function( nRow, aaData ) {
+      if ( aaData[0] != null )
+      {
+ $('td:eq(0)', nRow).html('<a href="{{ path('drug') }}/' + aaData[0] + '">'+ aaData[0] + '</a>');
+
+if ( aaData[1] != null )
+      {
+
+ $('td:eq(1)', nRow).html('<a href="{{ path('target') }}/' + aaData[1] + '">'+ aaData[1] + '</a>');
+
+
+       }
+
+	return nRow;
+    }
+    //});
+
+
+  }
+
+   
 
    	// "sServerMethod": "GET"
     });
@@ -84,7 +108,7 @@ var asInitVals = new Array();
  {% for result in results %}
  
    <tr>
-     <td><a href="{{ path('drug', { 'drug_uri': result.drug_uri }) }}">{{ result.drug_name}}</a></td>
+     <td><a href="{{ path('drug', { 'drug_name': result.drug_name }) }}">{{ result.drug_name}}</a></td>
      <td>{% for target in result.targets %}
        <li><a href="{{ path('target', { 'target_name': target.target_name })  }}">{{target.target_name}}</a>
  	 {% endfor %}

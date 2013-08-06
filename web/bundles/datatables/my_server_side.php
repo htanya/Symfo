@@ -1,23 +1,23 @@
 <?php
 
-				//get server variables for table
-	//sEcho
+//get server variables for table
+//sEcho
 if(isset($_GET['sEcho'])) {
  $echo_value = intval($_GET['sEcho']);
 } else $echo_value = 1;
 
-	//iDisplayStart (offset)
+//iDisplayStart (offset)
 if(isset($_GET['iDisplayStart'])) {
  $offset = $_GET['iDisplayStart'];
 } else $offset = 0;
 
-	//iDisplayLength (limit)
+//iDisplayLength (limit)
 if(isset($_GET['iDisplayLength'])) {
  $limit = $_GET['iDisplayLength'];
 } else $limit = 20;
 
 
-				// get the total number of results
+// get the total number of results
 
 $q = "SELECT (count(?drug) AS ?count) WHERE { ?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug>}";
 $r = getBasic_FromEndpoint($q);
@@ -25,7 +25,7 @@ $o = json_decode($r);
 $total_record_count = (int) ($o->results->bindings[0]->count->value);
 
 
-				// now fetch what is wanted to populate the table
+// now fetch what is wanted to populate the table
 
 
 //allows column 1 to be filterable
@@ -38,11 +38,11 @@ if(isset($_GET['sSearch_0'])) {
   $filter = " filter regex(?drugname,\"".$_GET['sSearch_0']."\", \"i\")";
 }
 //Query to get drug_uri's and drug
-$q = "SELECT ?drug ?drugname 
-WHERE { 
- ?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug> .
- ?drug rdfs:label ?drugname .
- $filter
+$q = "SELECT ?drug ?drugname
+WHERE {
+?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug> .
+?drug rdfs:label ?drugname .
+$filter
 }";
 
 
@@ -70,12 +70,12 @@ if(isset($_GET['sSearch_1'])) {
   $filter = " filter regex(?target_name,\"".$_GET['sSearch_1']."\", \"i\")";
 }
 
-  $q = "SELECT ?target_uri ?target_name 
+  $q = "SELECT ?target_uri ?target_name
 WHERE {
- <$drug_uri> <http://bio2rdf.org/drugbank_vocabulary:target> ?target_uri .
- ?target_uri rdfs:label ?target_name .
- $filter
-} 
+<$drug_uri> <http://bio2rdf.org/drugbank_vocabulary:target> ?target_uri .
+?target_uri rdfs:label ?target_name .
+$filter
+}
 ORDER BY ASC(?target_name)";
   $r = getBasic_FromEndpoint($q);
   $o2 = json_decode($r);
@@ -98,11 +98,11 @@ $filter = '';
 if(isset($_GET['sSearch_2'])) {
   $filter = " filter regex(?indication,\"".$_GET['sSearch_2']."\", \"i\")";
 }
-  $q = "SELECT ?indication 
+  $q = "SELECT ?indication
 WHERE {
- <$drug_uri> <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication  .
- $filter
-} 
+<$drug_uri> <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication .
+$filter
+}
 ORDER BY ASC(?indication)";
   $r = getBasic_FromEndpoint($q);
   $o3 = json_decode($r);
@@ -114,7 +114,7 @@ ORDER BY ASC(?indication)";
    $indication_list .= "<li>";
    $i = (string) ($result3->indication->value);
    if($i != '') $filtered = false;
-   $indication_list  .= $i;
+   $indication_list .= $i;
   }
   $indication_list .= '</ul>';
   if($filtered != true) $row[2] = $indication_list;
@@ -127,19 +127,19 @@ ORDER BY ASC(?indication)";
   if(!isset($row[1]) || !isset($row[2])) unset($row);
 
   // check for global filtering
-/*
-  if(isset($row) && $_GET['sSearch']) {
-   $filter = true;
-   foreach($row AS $r) {
-      if( strstr($r,$_GET['sSearch']) !== FALSE) {
-        $filter = false;break;
-      }
-   }
-   if($filter == true) {
-    unset($row);
-   }
-  }
-*/
+
+if(isset($row) && $_GET['sSearch']) {
+$filter = true;
+foreach($row AS $r) {
+if( stristr($r,$_GET['sSearch']) !== FALSE) {
+$filter = false;break;
+}
+}
+if($filter == true) {
+unset($row);
+}
+}
+
   if(isset($row)) {
    $rows[] = $row;
   }
@@ -160,9 +160,9 @@ exit;//don't delete
 
 
 
-					// :::::::::::::::::::::
-					// ::::: Functions ::::: 
-					// :::::::::::::::::::::
+// :::::::::::::::::::::
+// ::::: Functions :::::
+// :::::::::::::::::::::
 
  
 //final query used to get the results with the desired limit and offset -> to be returned to table
@@ -187,12 +187,12 @@ function getBasic_FromEndpoint($query){
         }else{
                 return null;
         }
-} 
+}
 
 //$test_records = (int) 4000;
 
 
-	
+
 /*
 SPARQL for total endpoint results
 
@@ -213,33 +213,32 @@ OLD CODE
 
 //obtaining limit from table, and using it for SPARQL query
 $sLimit = "";
-	if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' ) //Get_ variables are given by server/DataTables
-	{
-		$sLimit = 
-			( $_GET['iDisplayLength'] );
-	}
+if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' ) //Get_ variables are given by server/DataTables
+{
+$sLimit =
+( $_GET['iDisplayLength'] );
+}
 
 
 $orderby = '?drug';
 
 
 
-	
 
 $myQuery = "SELECT ?drug ?drugname ?target ?indication
-			WHERE {
-			?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug> .
-			?drug rdfs:label ?drugname .
-			?drug <http://bio2rdf.org/drugbank_vocabulary:target> ?t .
-			?t rdfs:label ?target .
-			OPTIONAL{
-			?drug <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication .}
-			}";
+WHERE {
+?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug> .
+?drug rdfs:label ?drugname .
+?drug <http://bio2rdf.org/drugbank_vocabulary:target> ?t .
+?t rdfs:label ?target .
+OPTIONAL{
+?drug <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication .}
+}";
 
 $query_for_count = "SELECT (COUNT(?drug) AS ?count)
-			WHERE {
-			?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug> .
-			";
+WHERE {
+?drug a <http://bio2rdf.org/drugbank_vocabulary:Drug> .
+";
 
 
 $myQuery2 = $myQuery;
@@ -253,21 +252,20 @@ $aColumns = array( 'drugname', 'target', 'indication');
 // no limit|order by|offset - used later on to determine offset for 2nd query (the one brought back to the client)
 
 $general_result = getBasic_FromEndpoint(urlencode($myQuery2));
- 
 if($general_result != null){
-        //print_r($general_result);
-} 
+//print_r($general_result);
+}
 
 //number of entries in endpoint (using <xml> to denote new row)
 //$new_row = '<binding name="drug">';
 
-//place of user (needs to be an integer) 
+//place of user (needs to be an integer)
 $offset = "";
 
 if ( isset( $_GET['iDisplayStart'] ) && $_GET['iDisplayLength'] != '-1' )
-	{
-		$offset = ( $_GET['iDisplayStart'] );
-	}
+{
+$offset = ( $_GET['iDisplayStart'] );
+}
 
 //$offset = ($GET_['iDisplayStart']); //iDisplayStart given by server/DataTables
 
@@ -287,7 +285,7 @@ $offset = 5;
 
 
 //2nd QUERY (to obtain results)
-	//Limit query matches returned
+//Limit query matches returned
 
 
 //order by (?variable)
@@ -296,9 +294,8 @@ $orderby = '?drug';
 //query
 
 $filtered_result = getFromEndpoint(urlencode($myQuery), $orderby, $sLimit, $offset);
- 
 if($filtered_result != null){
-      // print_r($filtered_result);
+// print_r($filtered_result);
 
 
 }
@@ -317,23 +314,23 @@ $output = array(
 );
 
 while ( $aRow = ( $filtered_result ) )
-	{
-		$row = array();
-		for ( $i=0 ; $i<count($aColumns) ; $i++ )
-		{
-			if ( $aColumns[$i] == !null )
-			{
-				// Special output formatting for 'version' column 
-				$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
-			}
-			else if ( $aColumns[$i] != ' ' )
-			{
-				 //General output 
-				$row[] = ($aRow[ $aColumns[$i] ]);
-			}
-		}
-		$output['aaData'][] = $row;
-	}
+{
+$row = array();
+for ( $i=0 ; $i<count($aColumns) ; $i++ )
+{
+if ( $aColumns[$i] == !null )
+{
+// Special output formatting for 'version' column
+$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+}
+else if ( $aColumns[$i] != ' ' )
+{
+//General output
+$row[] = ($aRow[ $aColumns[$i] ]);
+}
+}
+$output['aaData'][] = $row;
+}
 
 echo json_encode( $output );
 
