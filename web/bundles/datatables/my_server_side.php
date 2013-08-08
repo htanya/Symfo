@@ -58,9 +58,12 @@ $rows = array();
 foreach($o->results->bindings AS $result) {
   $drug_uri = (string) ($result->drug->value);
   $drug_name = (string) ($result->drugname->value);
+ 
+  
 
   $row = array();
   $row[] = $drug_name;
+
 
 
 
@@ -85,11 +88,15 @@ ORDER BY ASC(?target_name)";
   $target_list = '<ul>';
   foreach($o2->results->bindings AS $result2) {
    $target_list .= "<li>";
-   $target_list .= (string) ($result2->target_name->value);
+   preg_match("/\[drugbank_target:(\d{2,4})\]/",(string) ($result2->target_name->value),$m);
+   $target_id = $m[1];
+  // $target_list .= (string) ($result2->target_name->value);
+   $target_list .= '<a href="http://localhost/Symfony/web/app_dev.php/try/target/'.$target_id.'">'.(string) ($result2->target_name->value).'</a>';
    $filtered = false;
   }
   $target_list .= '</ul>';
   if($filtered != true) $row[1] = $target_list;
+  //if($filtered != true) $row[2] = '<a href ="http://test.com/">'.$target_list.'</a>' ;
 
 
 
@@ -107,7 +114,7 @@ ORDER BY ASC(?indication)";
   $r = getBasic_FromEndpoint($q);
   $o3 = json_decode($r);
 
-//create a list of targets to display in table
+//create a list of indications to display in table
   $filtered = true;
   $indication_list = '<ul>';
   foreach($o3->results->bindings AS $result3) {
@@ -117,7 +124,8 @@ ORDER BY ASC(?indication)";
    $indication_list .= $i;
   }
   $indication_list .= '</ul>';
-  if($filtered != true) $row[2] = $indication_list;
+  if($filtered != true) $row[2] = $indication_list ;
+
 
 
 
@@ -140,10 +148,12 @@ unset($row);
 }
 }
 
-  if(isset($row)) {
+ if(isset($row)) {
    $rows[] = $row;
   }
 }
+
+
 
 //$record_count = (int) 4000;
 

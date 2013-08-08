@@ -9,20 +9,72 @@
 
 {% block Phenome_body %}
 
-{% set uri = app.request.uri %}
-{% set uri2 = uri | removeDrugPath %}
-
-
 
 <body>
 <div id="top"> 
 {% block title %}
-{% set uri = app.request.uri %}
-{% set uri2 = uri | removeDrugPath %}
-<h3>Drug page for {{uri2}}</h3>
+<h3>Drug page for {{results.drug_name}}</h3>
 {% endblock %}
 </div>
 
+
+<div id="left">
+{% block drug_uri%}
+<h3>Drug uri:</h3><p> <h4> {{results.drug_uri}}</h4><p>
+{% endblock %}
+</div>
+
+
+<div id="middle">
+{% block target_uri %}
+
+{% for drug in results %}
+{% for targets in drug %}
+
+<h3>Target name:</h3>  <p> <h4>{{targets.target_uri}}</h4><p> 
+
+{% endfor %}
+{% endfor %}
+{% endblock %}
+
+
+
+
+<div id="right">
+{% block target_name %}
+
+{% for drug in results %}
+{% for targets in drug %}
+
+<h3>Target name:</h3>  <p> <h4>{{targets.target_name}}</h4><p> 
+
+{% endfor %}
+{% endfor %}
+
+
+
+
+{% endblock %}
+</div>
+
+{% endblock %} {# closes the body #}
+
+
+{% block stylesheets %}
+            
+            <link href="{{ asset('bundles/datatables/css/layout.css') }}" rel="stylesheet" />
+{% endblock %}
+
+
+
+
+
+{#
+##################################################################################
+{% block stylesheets %}
+            
+            <link href="{{ asset('bundles/datatables/css/layout.css') }}" rel="stylesheet" />
+{% endblock %}
 
 <div id="left">
 {% block drug_uri%}
@@ -30,7 +82,7 @@
 {% set uri2 = uri | removeDrugPath %}
 
 {% for result in results %}
-	{% if result.drug_uri == (uri| removeDrugPath) %}
+	{% if result.drug_name == (uri2|url_decode) %}
 <h3>Drug URI</h3><p> <h4>{{result.drug_uri}}</h4> <p>
 	{% endif %}
 {% endfor %}
@@ -44,7 +96,7 @@
 
 {% for result in results %}
 	{% for target in result.targets %}
-		{% if result.drug_uri == (uri| removeDrugPath) %}
+		{% if result.drug_name == (uri2|url_decode) %}
 			<h3>Drug Target</h3><p> <h4>{{target.target_name}}</h4><p>
 		{% endif %}
 	{% endfor %}
@@ -62,7 +114,7 @@
 
 {% for result in results %}
 	{% if result.indications is defined %} {% for indication in result.indications %}
-		{% if result.drug_uri == (uri| removeDrugPath) %}
+		{% if result.drug_name == (uri2|url_decode) %}
 			<h3>Drug Indication</h3><p> <h4>{{indication.indication_uri}} </h4><p>
 		{% endif %}
 						{% endfor %}
@@ -78,16 +130,6 @@
 
 {% endblock %}
 
-
-{% block stylesheets %}
-            
-            <link href="{{ asset('bundles/datatables/css/layout.css') }}" rel="stylesheet" />
-{% endblock %}
-
-
-
-{#
-##################################################################################
 
  <p>
 

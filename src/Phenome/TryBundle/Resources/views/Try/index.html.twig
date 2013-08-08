@@ -32,16 +32,26 @@ var asInitVals = new Array();
     "bProcessing": true,
     "bServerSide": true,
     "sAjaxSource": "{{ asset ('bundles/datatables/my_server_side.php') }}",
+
 "fnRowCallback": function( nRow, aaData ) {
       if ( aaData[0] != null )
       {
- $('td:eq(0)', nRow).html('<a href="{{ path('drug') }}/' + aaData[0] + '">'+ aaData[0] + '</a>');
+ $('td:eq(0)', nRow).html('<a href="http://localhost/Symfony/web/app_dev.php/try/drug/' + aaData[0] + '">'+ aaData[0] + '</a>');
 
-if ( aaData[1] != null )
-      {
+ {
 
+
+
+//var data = valueOf(aaData[1]);
+//var n = data.split("<li>")+"<\n>";
+//var m = n.match(/\D.+\[drugbank_target:\d{1,5}\]/g)
+
+//t = aaData[1].replace(/<(\/)?(ul|li|)([^>]*)>/gi, "");
+
+/*if ( aaData[1] != null ){
  $('td:eq(1)', nRow).html('<a href="{{ path('target') }}/' + aaData[1] + '">'+ aaData[1] + '</a>');
-
+ }
+*/
 
        }
 
