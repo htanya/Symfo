@@ -1,0 +1,42 @@
+{# src/Phenome/TryBundle/Resources/views/Try/contact_page.html.twig #}
+
+<div id="navigation">
+  <a href={{ path('about') }}>About</a> | <a href={{ path('contact') }}>Contact</a> | <a href={{ path('phenome_try_homepage') }}>Homepage</a> 
+</div> 
+
+<body>
+<div id="top"> 
+	{% block title %}
+		<h7>About</h7>
+	{% endblock %}
+</div>
+
+<div id="middle">
+{% block contact %}
+	
+<h7>
+Intro to the method <br>
+<li> description (its use, brief overview of how it works, hypothesis, links to resources used) <br>
+<li> PhenomeNet, SIDER, DrugBank, MGI, BioPortal (links)<p></p>
+
+How to use <br>
+<li> instructions of use
+<li> example of how to use<p></p>
+
+Link to paper
+
+
+</h7>
+
+
+
+
+
+{% endblock %}
+</div>
+
+
+
+{% block stylesheets %}
+            <link href="{{ asset('bundles/datatables/css/contact_layout.css') }}" rel="stylesheet" />
+{% endblock %}

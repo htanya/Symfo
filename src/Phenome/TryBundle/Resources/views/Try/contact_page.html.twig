@@ -1,0 +1,38 @@
+{# src/Phenome/TryBundle/Resources/views/Try/contact_page.html.twig #}
+
+<div id="navigation">
+  <a href={{ path('about') }}>About</a> | <a href={{ path('contact') }}>Contact</a> | <a href={{ path('phenome_try_homepage') }}>Homepage</a> 
+</div> 
+
+<body>
+<div id="top"> 
+	{% block title %}
+		<h7>Contact</h7>
+	{% endblock %}
+</div>
+
+<div id="middle">
+{% block contact %}
+	
+<h7>
+Michel Dumontier, Carleton University, michel_dumontier@carleton.ca <p>
+<h7>
+Robert Hoehndorf, University of Cambridge, leechuck@leechuck.de <p>
+<h7>
+Georgios V. Gkoutos, University of Cambridge, g.gkoutos@ic.ac.uk <p>
+<h7>
+Tanya Hiebert, Carleton University, tanya_hiebert@carleton.ca
+</h7>
+
+
+
+
+
+{% endblock %}
+</div>
+
+
+
+{% block stylesheets %}
+            <link href="{{ asset('bundles/datatables/css/contact_layout.css') }}" rel="stylesheet" />
+{% endblock %}

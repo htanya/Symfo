@@ -17,7 +17,7 @@ public function getFilters()
     public function removeDrugPathFilter($text)
 	{
 $search= '';
-$search = '/http.+drug\//';
+$search = '/http.+indication\//'; //changed to "indication" instead of drug
     // replace non letter or digits by -
     		$text = preg_replace($search, '', $text);
 		return $text;

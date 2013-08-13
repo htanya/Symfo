@@ -46,6 +46,10 @@ $container
     ->register('phenome.twig.urlencode_extension', 'Phenome\TryBundle\Twig\URLencodeExtension')
     ->addTag('twig.extension');
 
+$container
+    ->register('phenome.twig.getTargetID_extension', 'Phenome\TryBundle\Twig\GetTargetID')
+    ->addTag('twig.extension');
+
 //$container->setParameter('DrugRepository.class', 'getDrugQuery');
 
 /*

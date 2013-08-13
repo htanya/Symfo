@@ -15,6 +15,11 @@
     Bienvenue à la page test pour PhenomeDrug :p
     </p> 
 
+<div id="navigation">
+ <div align="right">
+ <a href={{ path('about') }}>About</a> | <a href={{ path('contact') }}>Contact</a> | <a href={{ path('phenome_try_homepage') }}>Homepage</a> 
+</div>  <p>
+
 
 
  <head>
@@ -41,30 +46,15 @@ var asInitVals = new Array();
  {
 
 
-
-//var data = valueOf(aaData[1]);
-//var n = data.split("<li>")+"<\n>";
-//var m = n.match(/\D.+\[drugbank_target:\d{1,5}\]/g)
-
-//t = aaData[1].replace(/<(\/)?(ul|li|)([^>]*)>/gi, "");
-
-/*if ( aaData[1] != null ){
- $('td:eq(1)', nRow).html('<a href="{{ path('target') }}/' + aaData[1] + '">'+ aaData[1] + '</a>');
- }
-*/
-
        }
 
 	return nRow;
     }
-    //});
 
 
   }
 
-   
-
-   	// "sServerMethod": "GET"
+   	
     });
 
 
@@ -145,7 +135,12 @@ var asInitVals = new Array();
 </table>
 </html>
 
-{#
+
+
+
+
+
+{# CODE BELOW HAS BEEN COMMENTED OUT
 
 {drugnames}
  <ul>

@@ -15,69 +15,58 @@ class TryController extends Controller
   {
 
 
-  public function indexAction()
-    {
-	
-$get_drugs_service = $this->container->get('phenome_try.query');
-$results = array();	
-$results = $get_drugs_service->getAllDrugInfo();
+ 	public function indexAction()
+	{
+		$service = $this->container->get('phenome_try.query');
+		$results = array();	
+		$results = $service->getAllDrugInfo();
 
-return $this->render('PhenomeTryBundle:Try:index.html.twig',  array('results'=>$results));
-
-
+		return $this->render('PhenomeTryBundle:Try:index.html.twig',  array('results'=>$results));
 	} //closes function
 
 
-public function get_drugsAction()
-    {
-
-$drug_uri = new Drug;
-$get_drugs_service = $this->container->get('phenome_try.query');
-$results = array();	
-$results = $get_drugs_service->getAllDrugInfo();
-//$drug_uri = $result->($o->getDrugId)
-//var_dump($results);
+	public function get_drugsAction($drug_name)
+	{
+		
+		$service = $this->container->get('phenome_try.query');
+		$results = $service->getRenderedDrug($drug_name);
+		return $this->render('PhenomeTryBundle:Try:drug_page.html.twig', array('results'=>$results));
 
 
-return $this->render('PhenomeTryBundle:Try:get_drugs.html.twig', array('results'=>$results));
-
-				} //closes function 
+	} //closes function 
 
 
-public function get_TargetInfoAction()
-    {
-$target_name = new Drug;
-$get_drugs_service = $this->container->get('phenome_try.query');
-$results = array();	
-$results = $get_drugs_service->getAllDrugInfo();
-//$drug_uri = $result->($o->getDrugId)
-//var_dump($results);
-return $this->render('PhenomeTryBundle:Try:target_page.html.twig', array('results'=>$results));
-   } //closes function 
+	public function get_TargetInfoAction($target_id)
+	{
+		$service = $this->container->get('phenome_try.query');
+		$results = array();
+		$results = $service->getTarget($target_id);
 
-public function get_IndicationInfoAction()
-    {
-$indication_uri = new Drug;
-$get_drugs_service = $this->container->get('phenome_try.query');
-$results = array();	
-$results = $get_drugs_service->getAllDrugInfo();
-//$drug_uri = $result->($o->getDrugId)
-//var_dump($results);
-return $this->render('PhenomeTryBundle:Try:indication_page.html.twig', array('results'=>$results));
-   } //closes function 
+		return $this->render('PhenomeTryBundle:Try:target_page.html.twig', array('results'=>$results));
+	} //closes function 
 
+	public function get_IndicationInfoAction($indication)
+	{
+		
+		$service = $this->container->get('phenome_try.query');
+		$results = $service->getDrug_TargsfromInd($indication);
+		return $this->render('PhenomeTryBundle:Try:indication_page.html.twig', array('results'=>$results));
+	} //closes function 
 
-
-
-	
+	public function get_ContactPageAction()
+	    {
+		return $this->render(
+            'PhenomeTryBundle:Try:contact_page.html.twig'
+        			    );
+	    }
 
 
-
-
-
-
-
-
+	public function get_AboutPageAction()
+	    {
+		return $this->render(
+            'PhenomeTryBundle:Try:about_page.html.twig'
+        			    );
+	    }
 
 
 
@@ -87,7 +76,7 @@ return $this->render('PhenomeTryBundle:Try:indication_page.html.twig', array('re
 
 
 /* OLD CODE
-	$result = $get_drugs_service-> getDrugsQuery('result');
+	$result = $service-> getDrugsQuery('result');
 
 //accessing $result array (from SPARQL query), and getting out the drug attributes (drugname, drug uri, target and indications)
 for($i=0;$i<count($result);$i++){

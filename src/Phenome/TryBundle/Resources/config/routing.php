@@ -37,7 +37,15 @@ $collection->add('indication', new Route('/indication/{indication}', array(
  'indication'        => 1,
 )));  
 
+$collection->add('contact', new Route('/contact', array(
+    '_controller' => 'PhenomeTryBundle:Try:get_ContactPage',
+ 'contact'        => 1,
+)));  
 
+$collection->add('about', new Route('/about', array(
+    '_controller' => 'PhenomeTryBundle:Try:get_AboutPage',
+	 'about'  => 1,
+)));  
 
 
 return $collection;
