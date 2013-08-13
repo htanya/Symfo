@@ -8,6 +8,20 @@ use Phenome\TryBundle\Twig;
 
 //use Phenome\TryBundle\Entity\Drug;
 
+/*
+$container->setDefinition(
+    'remove.slashes',
+    new Definition(
+        'Phenome\TryBundle\Query\checkaddslashes'/*,
+        array(
+            new Reference('service_id'),
+            "plain_value",/*
+            new Parameter('parameter_name'), 
+        )  */ /*
+    ) 
+); */
+
+
 $container->setDefinition(
     'phenome_try.query',
     new Definition(
@@ -19,7 +33,6 @@ $container->setDefinition(
         )  */
     ) 
 );
-
 
 $container
     ->register('phenome.twig.replacedrug_extension', 'Phenome\TryBundle\Twig\ReplacedrugExtension')

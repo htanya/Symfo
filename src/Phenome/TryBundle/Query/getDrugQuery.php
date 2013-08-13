@@ -122,9 +122,8 @@ public function getTarget($target_id)
 public function getDrugID($drug_name) 
 {
 
-//echo '<pre>';
+
 $result = array();
-//$result[] = $drug_name;
 
 
 	  $sparql = new \EasyRdf_Sparql_Client($this->endpoint);
@@ -147,7 +146,7 @@ public function getTargetsFromDrugId($drug_name)
   $drug_uri = "http://bio2rdf.org/"."$drug_id";
 
 $result = array();
-//$result[] = $drug_uri;
+
 
 
 $query = 
@@ -190,8 +189,103 @@ public function getRenderedDrug($drug_name)
 
 
 
+
+///// @@@@ //////
+
+    
+
+
+public function getDrugforInd($indication)
+{
+$indication2 = str_replace(")", "\)", $indication);
+$indication3 = str_replace("(", "\(", $indication2);
+$indication4 = addcslashes ($indication3, "\/");
+
+$result = array();
+
+
+ $sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql');
+ $result = $sparql->query ('SELECT ?drug_uri ?drug_name 
+WHERE {
+  ?drug_uri <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication .
+  ?drug_uri rdfs:label ?drug_name .
+FILTER regex(str(?indication), "'.$indication4.'", "i")
+}');
+ return $result;
+}
+
+
+public function getTargetforInd($indication)
+{
+$indication2 = str_replace(")", "\)", $indication);
+$indication3 = str_replace("(", "\(", $indication2);
+$indication4 = addcslashes ($indication3, "\/");
+
+$result = array();
+
+
+ $sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql');
+ $result = $sparql->query ('SELECT ?target_uri ?target_name
+WHERE {
+  ?drug_uri <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication .
+  ?drug_uri <http://bio2rdf.org/drugbank_vocabulary:target> ?target_uri  .
+  ?target_uri rdfs:label ?target_name .
+FILTER regex(str(?indication), "'.$indication4.'", "i")
+      }');
+ return $result;
+}
+
+
+public function getDrug_TargsfromInd($indication)
+{
+	// fetch the basic drug info
+	$drugs = array();
+	$drugs = $this->getDrugforInd($indication);
+	foreach($drugs AS $i => $drug) {
+		$d = '';
+		$d['drug_uri'] = (string) $drugs[$i]->{'drug_uri'};
+		$d['drug_name'] = (string) $drugs[$i]->{'drug_name'};
+
+		$o['drugs'][] = $d;
+	}
+
+	// fetch the targets that target it
+	$targets = array();
+	$targets = $this->getTargetforInd($indication);
+	foreach($targets AS $i => $target) {
+		$e = '';
+		$e['target_uri'] = (string) $targets[$i]->{'target_uri'};
+		$e['target_name'] = (string) $targets[$i]->{'target_name'};
+
+		$o['targets'][] = $e;
+	}
+	
+
+	return $o;
+}
+
+///// @@@@ //////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 public function getIndications($drug_uri)
 {
+$result = array();
  $sparql = new \EasyRdf_Sparql_Client('http://cu.drugbank.bio2rdf.org/sparql');
  $result = $sparql->query ('SELECT ?indication_uri
 WHERE {

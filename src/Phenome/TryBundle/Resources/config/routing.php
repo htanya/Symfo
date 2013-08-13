@@ -1,7 +1,7 @@
 <?php
 // /var/www/Symfony/src/Phenome/TryBundle/Resources/config
 
-// regEx for drugname "(\D+)\[\D
+
 
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Route;
@@ -12,26 +12,29 @@ $collection->add('phenome_try_homepage', new Route('/', array(
 )));
 
 
-$collection->add('drug', new Route('/drug/{drug_uri}', array(
+$collection->add('drug', new Route('/drug/{drug_name}', array(
     '_controller' => 'PhenomeTryBundle:Try:get_drugs',
- 'drug_uri'        => 1,
+ 'drug_name'        => 1,
 
 ), array(
-    'drug_uri' => 'http://bio2rdf.org/drugbank:\D{2}\d{5}',
+    'drug_name' => '\w.+\s\[drugbank:\D{2}\d{5}]',
+ // 'drug_uri' => 'http://bio2rdf.org/drugbank:\D{2}\d{5}',
 
 )));
 
 
-$collection->add('target', new Route('/target/{target_name}', array(
+$collection->add('target', new Route('/target/{target_id}', array(
     '_controller' => 'PhenomeTryBundle:Try:get_TargetInfo',
- 'target_name'        => 1,
+ //'target_name'        => 1,
+   'target_id' => 1
 ), array(
-    'target_name' => '\w.+\s\[drugbank_target:\d{2,4}\]',
+  //  'target_name' => '\w.+\s\[drugbank_target:\d{2,4}\]',
+    'target_id' => '\d{2,4}'
 )));
 
-$collection->add('indication', new Route('/indication/{indication_uri}', array(
+$collection->add('indication', new Route('/indication/{indication}', array(
     '_controller' => 'PhenomeTryBundle:Try:get_IndicationInfo',
- 'indication_uri'        => 1,
+ 'indication'        => 1,
 )));  
 
 
